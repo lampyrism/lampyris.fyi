@@ -17,16 +17,19 @@
                  min-height:100vh;">
 
         <!-- Menu window -->
-        <div style="width:1000px;
+        <div id="window"
+             style="width:1000px;
                     height:500px; 
                     background-color:rgb(17, 46, 75);
                     border:4px groove rgb(255, 255, 255); 
                     border-radius:10px; 
-                    padding:0px 8px; ">
+                    padding:0px 8px;
+                    position:absolute">
         
             <!-- Title bar-->
             <!-- When there are 4 values, they go to top, right, bottom, left. -->
-            <div style="height:30px;
+            <div id="title-bar"
+                 style="height:30px;
                         background-color:rgb(85, 132, 212);
                         border:2px solid rgb(255, 255, 255);
                         border-radius:10px 10px 0px 0px;
@@ -41,11 +44,12 @@
                                   margin:0;
                                   color:rgb(255, 255, 255);
                                   font-weight:bold;">
-                            Lampyris.fyi
+                            Lampyris
                         </p>
 
                         <div>
-                            <button style="width:20px;
+                            <button id="minimise-button"
+                                    style="width:20px;
                                            height:20px;
                                            border:none;
                                            border-radius:10px;
@@ -56,7 +60,8 @@
                                            top:2px;">          
                             </button>
 
-                            <button style="width:20px;
+                            <button id="maximise-button"
+                                    style="width:20px;
                                            height:20px;
                                            border:none;
                                            border-radius:10px;
@@ -67,7 +72,8 @@
                                            top:2px;">
                             </button>
 
-                            <button style="width:20px;
+                            <button id="close-button"
+                                    style="width:20px;
                                            height:20px;
                                            border:none;
                                            border-radius:10px;
@@ -81,7 +87,8 @@
                         </div>
             </div>
 
-            <div style="text-align:center;
+            <div id="content"
+                 style="text-align:center;
                         color:rgb(255, 255, 255);">
                 <p>
                     This is me trying to learn something cool - HTML!
@@ -142,6 +149,73 @@
             </div> 
             
         </div>
+
+        <script>
+
+            // Establish constants for use in scripts.
+            const mainWindow = document.getElementById("window");
+            const titleBar = document.getElementById("title-bar");
+            const windowContent = document.getElementById("content");
+            const minimiseButton = document.getElementById("minimise-button");
+            const maximiseButton = document.getElementById("maximise-button");
+            const closeButton = document.getElementById("close-button");
+        
+        </script>
+
+        <!-- Window movement script -->
+        <script>
+
+            let dragging = false;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            // Function to tell the window to start dragging when title bar is clicked.
+            titleBar.addEventListener("mousedown", function(event) { 
+
+                // This ignores clicks on the window buttons.
+                if (event.target === minimiseButton ||
+                    event.target === maximiseButton ||
+                    event.target === closeButton) {
+                    return;
+                }
+
+                dragging = true;
+                offsetX = event.clientX - mainWindow.offsetLeft;
+                offsetY = event.clientY - mainWindow.offsetTop;
+            });
+
+            // Function to handle the movement of the window while dragging.
+            document.addEventListener("mousemove", function(event) {
+                if (dragging) {
+                    mainWindow.style.left = (event.clientX - offsetX) + "px";
+                    mainWindow.style.top = (event.clientY - offsetY) + "px";
+                }
+            });
+
+            // Function to stop dragging when the mouse button is released.
+            document.addEventListener("mouseup", function() {
+                dragging = false;
+            });
+
+        </script>
+
+        <!-- Window minimise/maximise script -->
+        <script>
+
+            // Function to hide the window content when minimise button is clicked.
+            minimiseButton.addEventListener("click", function() {
+                windowContent.style.display = "none";
+                mainWindow.style.border = "none";
+                mainWindow.style.backgroundColor = "transparent";
+            });
+
+            // Function to show the window content when maximise button is clicked.
+            maximiseButton.addEventListener("click", function() {
+                windowContent.style.display = "block";
+                mainWindow.style.border = "4px groove rgb(255, 255, 255)";
+                mainWindow.style.backgroundColor = "rgb(17, 46, 75)";
+            });
+        </script>
             
     </body>
     
